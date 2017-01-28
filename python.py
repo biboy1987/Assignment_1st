@@ -19,6 +19,13 @@ secondArgument = sys.argv[2]
 #dimension = int(numbers**(.5))
 #print dimension
 
+
+# Tiles Class 
+# Description:
+# - One tile of the board
+# Attribute: 
+# - available moving space
+#   up, dow, left, right
 class Tiles:
 
 	# No = position in the table
@@ -43,43 +50,43 @@ class Tiles:
 		
 		# 2. Calculate the attributes of Tile
 		# default 0 everything -> 0=not able, 1=able 
-        self.Up = 0
-        self.Down = 0
-        self.Left = 0
-        self.Right = 0
-		# if on the left side, right shift is available
+        self.Up = 1
+        self.Down = 1
+        self.Left = 1
+        self.Right = 1
+		# if on the left side, left shift is not available
         self.x = self.count - self.dimension
         while self.x >= 0:
             print "self.x: ",self.x
             if self.x == self.zeropos:
-                self.Right = 1
+                self.Right = 0
             self.x = self.x - self.dimension
-        print "Right available: ",self.Right
-		# if on the right side, Left shift is available
+        print "Left available: ",self.Right
+		# if on the right side, right shift is not available
         self.x = self.count - 1
         while self.x >= 0:
             print "self.x: ",self.x
             if self.x == self.zeropos:
-                self.Left = 1
+                self.Left = 0
             self.x = self.x - self.dimension
-        print "Left available: ",self.Left
-		# if on the top side, Down shift is available
+        print "Right available: ",self.Left
+		# if on the top side, Up shift is not available
         self.x = self.dimension - 1
         while self.x >= 0:
             print "self.x: ",self.x
             if self.x == self.zeropos:
-                self.Down = 1
+                self.Down = 0
             self.x = self.x - 1
-        print "Down available: ",self.Down
+        print "Up available: ",self.Down
         
-		# if on the bot side, Up shift is available
+		# if on the bot side, Down shift is not available
         self.x = self.count - 1
         while self.x >= (self.count - self.dimension):
             print "self.x: ",self.x
             if self.x == self.zeropos:
-                self.Up = 1
+                self.Up = 0
             self.x = self.x - 1
-        print "Up available: ",self.Up
+        print "Down available: ",self.Up
 		
         Tiles.No = Tiles.No + 1
 
