@@ -116,21 +116,26 @@ class Tiles:
 		
     def getUp(self):
         print self.Up
+        return self.Up
 		
     def getDown(self):
         print self.Down
+        return self.Down
 		
-    def printRight(self):
+    def getRight(self):
         print self.Right
+        return self.Right
 
     def getLeft(self):
         print self.Left
+        return self.Left
 
 #generate table
 class Table():
     
     def __init__(self, actualState_s):
 		# 0. Initialization of table
+        self.dimesion_i = 3										# ToDo: calculate it!!!
         self.tableId_s = actualState_s							# set name to instance
         self.listofTiles_l = []									# declaration object list of tiles
         self.numList_l = re.findall(r'\d+', self.tableId_s)		# get the input from the list
@@ -141,18 +146,69 @@ class Table():
 		# - get position of zero
         for x in range(0, self.amountOfTiles_i):
             if self.listofTiles_l[x].getValue() == 0:
-                self.zeroPosition_i = self.listofTiles_l[x].getNo()			
+                self.zeroPosition_i = self.listofTiles_l[x].getNo()	
+        # - get zeropostion related available shifts
+        self.amountOfavilableshifts_i = 0
+        if self.listofTiles_l[self.zeroPosition_i].getDown() == 1:
+            self.amountOfavilableshifts_i = self.amountOfavilableshifts_i + 1
+        if self.listofTiles_l[self.zeroPosition_i].getUp() == 1:
+            self.amountOfavilableshifts_i = self.amountOfavilableshifts_i + 1
+        if self.listofTiles_l[self.zeroPosition_i].getLeft() == 1:
+            self.amountOfavilableshifts_i = self.amountOfavilableshifts_i + 1
+        if self.listofTiles_l[self.zeroPosition_i].getRight() == 1:
+            self.amountOfavilableshifts_i = self.amountOfavilableshifts_i + 1
+		# 2. Make list from next steps
+        self.nextState_l = []
+        self.nextStates_l = []														# declare list for available next states
+        self.assistantVariable_i = 0												# declare assistant variable to contain the swep position - zero position 	
+        if self.listofTiles_l[self.zeroPosition_i].getDown() == 1:
+            self.nextState_l = list(self.numList_l)
+            print ",".join(self.nextState_l)
+            self.nextState_l[self.zeroPosition_i], self.nextState_l[self.zeroPosition_i + self.dimesion_i] = self.nextState_l[self.zeroPosition_i + self.dimesion_i], self.nextState_l[self.zeroPosition_i]
+            self.assistantString_s = ",".join(self.nextState_l)
+            self.nextStates_l.append(self.assistantString_s)			
+        if self.listofTiles_l[self.zeroPosition_i].getUp() == 1:
+            self.nextState_l = list(self.numList_l)
+            print ",".join(self.nextState_l)
+            self.nextState_l[self.zeroPosition_i], self.nextState_l[self.zeroPosition_i - self.dimesion_i] = self.nextState_l[self.zeroPosition_i - self.dimesion_i], self.nextState_l[self.zeroPosition_i]
+            self.assistantString_s = ",".join(self.nextState_l)
+            self.nextStates_l.append(self.assistantString_s)	
+        if self.listofTiles_l[self.zeroPosition_i].getLeft() == 1:
+            self.nextState_l = list(self.numList_l)
+            print ",".join(self.nextState_l)
+            self.nextState_l[self.zeroPosition_i], self.nextState_l[self.zeroPosition_i - 1] = self.nextState_l[self.zeroPosition_i - 1], self.nextState_l[self.zeroPosition_i]
+            self.assistantString_s = ",".join(self.nextState_l)
+            self.nextStates_l.append(self.assistantString_s)	
+        if self.listofTiles_l[self.zeroPosition_i].getRight() == 1:
+            self.nextState_l = list(self.numList_l)
+            print ",".join(self.nextState_l)
+            self.nextState_l[self.zeroPosition_i], self.nextState_l[self.zeroPosition_i + 1] = self.nextState_l[self.zeroPosition_i + 1], self.nextState_l[self.zeroPosition_i]
+            self.assistantString_s = ",".join(self.nextState_l)
+            self.nextStates_l.append(self.assistantString_s)	
+		
             
     def getZeroPosition(self):
         print self.zeroPosition_i
+		
+    def getAmountOfAvailableShifts(self):
+        print self.amountOfavilableshifts_i
+
+    def getFirstAV(self):
+        print "Orig :", self.numList_l
+        print "Down :",self.nextStates_l[0]
+        print "Up   :",self.nextStates_l[1]
+        print "Left :",self.nextStates_l[2]
+        print "Right:",self.nextStates_l[3]
 	
 #    for obj in listofTiles:
 #        print(obj)
 	
 #    print listofTiles[1].getValue()
 
-firstTable = Table('7,1,2,3,4,5,6,0,8')
+firstTable = Table('4,1,2,3,0,5,6,7,8')
 print "Zeroposition",firstTable.getZeroPosition()
+print "Available shift amont:",firstTable.getAmountOfAvailableShifts()
+print firstTable.getFirstAV()
 
 #stTil = Tiles('0,1,2,3,4,5,6,7,8')
 #print(stTil)
